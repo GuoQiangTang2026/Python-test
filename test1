@@ -1,0 +1,80 @@
+import numpy as np
+import matplotlib.pyplot as plt
+
+# ===================== 解决中文不显示 =====================
+plt.rcParams['font.sans-serif'] = ['SimHei']  # 用黑体显示中文
+plt.rcParams['axes.unicode_minus'] = False    # 正常显示负号
+
+# ===================== 连续信号 =====================
+t_step = np.linspace(-5, 5, 1000)
+t_cycle = np.linspace(0, 2*np.pi, 1000)
+# 1. 连续单位阶跃信号
+u_t = np.where(t_step >= 0, 1, 0)
+
+# 2. 连续锯齿波信号
+saw_t = 2 * (t_cycle/(2*np.pi) - np.floor(0.5 + t_cycle/(2*np.pi)))
+
+# 3. 连续余弦信号（完整周期）
+cos_t = np.cos(t_cycle)
+
+# 4. 连续指数信号
+exp_t = np.exp(-t_step/2)
+
+# ===================== 离散信号 =====================
+n = np.arange(-5, 6, 1)
+u_n = np.where(n >= 0, 1, 0)
+delta_n = np.where(n == 0, 1, 0)
+
+# ===================== 绘图 =====================
+plt.figure(figsize=(12, 10))
+
+# 1 连续阶跃
+plt.subplot(3, 2, 1)
+plt.plot(t_step, u_t, 'b-', linewidth=2)
+plt.title('连续信号：单位阶跃信号')
+plt.xlabel('时间 t')
+plt.ylabel('幅值')
+plt.grid(True)
+
+# 2 锯齿波
+plt.subplot(3, 2, 2)
+plt.plot(t_cycle, saw_t, 'g-', linewidth=2)
+plt.title('连续信号：锯齿波信号')
+plt.xlabel('时间 t')
+plt.ylabel('幅值')
+plt.grid(True)
+
+# 3 余弦
+plt.subplot(3, 2, 3)
+plt.plot(t_cycle, cos_t, 'm-', linewidth=2)
+plt.title('连续信号：余弦信号（完整周期）')
+plt.xlabel('时间 t')
+plt.ylabel('幅值')
+plt.grid(True)
+
+# 4 指数
+plt.subplot(3, 2, 4)
+plt.plot(t_step, exp_t, 'c-', linewidth=2)
+plt.title('连续信号：指数信号 e^(-t/2)')
+plt.xlabel('时间 t')
+plt.ylabel('幅值')
+plt.grid(True)
+
+# 5 离散阶跃
+plt.subplot(3, 2, 5)
+plt.stem(n, u_n, 'r-', markerfmt='ro')
+plt.title('离散信号：单位阶跃信号')
+plt.xlabel('时间 n')
+plt.ylabel('幅值')
+plt.grid(True)
+
+# 6 离散冲激
+plt.subplot(3, 2, 6)
+plt.stem(n, delta_n, 'k-', markerfmt='ko')
+plt.title('离散信号：单位冲激信号')
+plt.xlabel('时间 n')
+plt.ylabel('幅值')
+plt.grid(True)
+
+plt.tight_layout()
+plt.show()
